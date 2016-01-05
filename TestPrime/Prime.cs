@@ -12,6 +12,7 @@ namespace TestPrime
 
         /// <summary>
         /// 引数 n までの素数を求める(同期型)
+        /// 結局、このメソッドは使わない。
         /// </summary>
         /// <param name="n">求める素数の最大数</param>
         /// <returns>GetPrimesを実行するTask</returns>
