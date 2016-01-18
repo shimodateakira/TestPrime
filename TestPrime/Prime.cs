@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace TestPrime
@@ -6,9 +8,29 @@ namespace TestPrime
     /// <summary>
     /// 素数を求めるクラス
     /// </summary>
-    public class Prime
+    public class Prime : IEnumerable<int>
     {
         List<int> primes = new List<int>() { 2 };
+
+        private int primeCount = 0;
+
+        public int PrimeCount
+        {
+            get { return primeCount; }
+            set { primeCount = value; }
+        }
+
+        public Prime() { }
+
+        public Prime(int primeCount)
+        {
+            this.primeCount = primeCount;
+        }
+
+        public Task<List<int>> GetPrimesAsync()
+        {
+            return GetPrimesAsync(primeCount);
+        }
 
         /// <summary>
         /// 引数 n までの素数を求める(同期型)
@@ -24,6 +46,11 @@ namespace TestPrime
             // 上記よりシンプルな記述
             // 引数はnをキャプチャし使用している
             return new Task<List<int>>(() => GetPrimes(n));
+        }
+
+        public List<int> GetPrimes()
+        {
+            return GetPrimes(primeCount);
         }
 
         /// <summary>
@@ -52,6 +79,34 @@ namespace TestPrime
                 }
             }
             return primes;
+        }
+
+        public IEnumerator<int> GetEnumerator()
+        {
+            for (int i = 2; i <= primeCount; i++)
+            {
+                int primesCount = primes.Count;
+                bool notPrimeFlag = false;
+                for (int j = 0; j < primesCount; j++)
+                {
+                    if ((i % primes[j]) == 0)
+                    {
+                        notPrimeFlag = true;
+                        j = primesCount;
+                        break;
+                    }
+                }
+                if (!notPrimeFlag)
+                {
+                    primes.Add(i);
+                    yield return i;
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
