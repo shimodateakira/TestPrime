@@ -50,7 +50,10 @@ namespace TestPrime
             Console.WriteLine($"{nameof(primes.Count)} = {primes.Count}");
 
             // 列挙で呼び出す
-            foreach (var item in primes)
+            Console.WriteLine("");
+            prime.Reset();
+            prime.PrimeCount = PrimesCount;
+            foreach (var item in prime)
             {
                 Console.Write($"{item} ");
             }

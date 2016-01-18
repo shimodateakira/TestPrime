@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace TestPrime
@@ -30,6 +31,12 @@ namespace TestPrime
         public Task<List<int>> GetPrimesAsync()
         {
             return GetPrimesAsync(primeCount);
+        }
+
+        public void Reset()
+        {
+            primes = new List<int>() { 2 };
+            primeCount = 0;
         }
 
         /// <summary>
@@ -83,6 +90,15 @@ namespace TestPrime
 
         public IEnumerator<int> GetEnumerator()
         {
+            if(primes.Count > 1)
+            {
+                foreach (var item in primes)
+                {
+                    yield return item;
+                }
+                yield break;
+            }
+
             for (int i = 2; i <= primeCount; i++)
             {
                 int primesCount = primes.Count;
